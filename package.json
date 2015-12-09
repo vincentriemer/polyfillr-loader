@@ -1,5 +1,5 @@
 {
-  "name": "polyfillr-loader",
+  "name": "polyfillr-plugin",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -9,9 +9,12 @@
   "author": "Vincent Riemer",
   "license": "MIT",
   "dependencies": {
+    "acorn": "^2.6.4",
     "async": "^1.5.0",
+    "colors": "^1.1.2",
     "core-js": "^1.2.6",
     "js-combinatorics": "^0.5.0",
+    "polyfillr-definitions": "vincentriemer/polyfillr-definitions",
     "webpack": "^1.12.9"
   }
 }
