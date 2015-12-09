@@ -1,0 +1,18 @@
+<%- modernizrBuild %>
+
+function generateBundleName(properties) {
+  var separator = '.';
+  if (properties.length === 0) { separator = ''; }
+  return 'bundle' + separator + properties.join('.') + '.js';
+}
+
+var failedProperties = [];
+<% properties.forEach(function(property) { %>
+if (!Modernizr.<%- property %>) {
+  failedProperties.push('<%- property %>');
+}
+<% }); %>
+var bundle = document.createElement('script');
+bundle.src = generateBundleName(failedProperties);
+
+document.body.appendChild(bundle);

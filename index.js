@@ -5,6 +5,9 @@ var async = require('async');
 var polyDefs = require('polyfillr-definitions');
 var acorn = require('acorn');
 var colors = require('colors');
+var fs = require('fs');
+var modernizr = require('modernizr');
+var ejs = require('ejs');
 
 // CREDIT: http://stackoverflow.com/a/1584377/3105183
 function arrayUnique(array) {
@@ -35,7 +38,7 @@ MyPlugin.prototype.apply = function (compiler) {
   var sourcePath = path.join(compiler.options.output.path, compiler.options.output.filename);
 
   compiler.plugin('after-emit', function (compilation, finalCallback) {
-    var detectionString = compilation.assets[compiler.options.output.filename]._cachedSource;
+    var detectionString = compilation.assets[compiler.options.output.filename]._sourceResult;
     var detectedTests = polyDefs.test(acorn.parse(detectionString, { emcaVersion: 6 }));
 
     // always include es5 as a baseline
@@ -47,7 +50,6 @@ MyPlugin.prototype.apply = function (compiler) {
       console.log(test.magenta);
     });
     console.log('');
-
 
     var bundleFunctions = [];
     var cmb = Combinatorics.power(testList);
@@ -79,6 +81,19 @@ MyPlugin.prototype.apply = function (compiler) {
           console.log(stats.toString({ chunks: false, colors: true }));
           callback();
         });
+      });
+    });
+
+    var allProperties = testList.map(function (test) {
+      return polyDefs.polyfills[test].property;
+    });
+
+    bundleFunctions.push(function (callback) {
+      var template = fs.readFileSync(path.join(__dirname, 'entry.ejs'), 'utf8');
+      modernizr.build({ 'feature-detects': testList }, function (result) {
+        var render = ejs.render(template, { modernizrBuild: result, properties: allProperties });
+        console.log(render);
+        callback();
       });
     });
 
