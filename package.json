@@ -1,0 +1,17 @@
+{
+  "name": "polyfillr-loader",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vincent Riemer",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.5.0",
+    "core-js": "^1.2.6",
+    "js-combinatorics": "^0.5.0",
+    "webpack": "^1.12.9"
+  }
+}
