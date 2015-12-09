@@ -1,1 +1,1 @@
-# polyfillr-loader
+# polyfillr-plugin
