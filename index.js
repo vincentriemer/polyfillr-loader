@@ -6,7 +6,7 @@ var polyDefs = require('polyfillr-definitions');
 var acorn = require('acorn');
 var colors = require('colors');
 var fs = require('fs');
-var modernizr = require('modernizr');
+var Modernizr = require('modernizr');
 var ejs = require('ejs');
 
 // CREDIT: http://stackoverflow.com/a/1584377/3105183
@@ -74,8 +74,7 @@ MyPlugin.prototype.apply = function (compiler) {
             filename: filename
           },
           plugins: [
-            new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }),
-            new webpack.optimize.DedupePlugin()
+            new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
           ]
         }, function (err, stats) {
           console.log(stats.toString({ chunks: false, colors: true }));
@@ -90,15 +89,30 @@ MyPlugin.prototype.apply = function (compiler) {
 
     bundleFunctions.push(function (callback) {
       var template = fs.readFileSync(path.join(__dirname, 'entry.ejs'), 'utf8');
-      modernizr.build({ 'feature-detects': testList }, function (result) {
+      Modernizr.build({ 'feature-detects': testList }, function (result) {
         var render = ejs.render(template, { modernizrBuild: result, properties: allProperties });
-        console.log(render);
-        callback();
+        var tempEntryPath = path.join(assetPath, 'temp-entry.js');
+
+        fs.writeFileSync(tempEntryPath, render);
+
+        webpack({
+          entry: tempEntryPath,
+          output: {
+            path: assetPath,
+            filename: 'entry.js'
+          },
+          plugins: [
+            new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+          ]
+        }, function(err, stats) {
+          console.log(stats.toString({ chunks: false, colors: true }));
+          fs.unlink(tempEntryPath, callback);
+        });
       });
     });
 
     async.series(bundleFunctions, finalCallback);
   });
-}
+};
 
 module.exports = MyPlugin;
