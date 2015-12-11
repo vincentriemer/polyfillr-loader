@@ -26,11 +26,15 @@ function arrayUnique(array) {
 function MyPlugin(options) {
   this.path = options.path || '';
   this.tests = options.tests || [];
+  this.publicPath = options.publicPath || '';
+  this.appendLocation = options.appendLocation || 'body';
 }
 
 MyPlugin.prototype.apply = function (compiler) {
   var assetPath = this.path;
   var testList = this.tests;
+  var publicPath = this.publicPath;
+  var appendLocation = this.appendLocation;
   var sourcePath = path.join(compiler.options.output.path, compiler.options.output.filename);
 
   compiler.plugin('after-emit', function (compilation, finalCallback) {
@@ -70,7 +74,7 @@ MyPlugin.prototype.apply = function (compiler) {
             filename: filename
           },
           plugins: [
-            new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+            //new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
           ]
         }, function (err, stats) {
           console.log(stats.toString({ chunks: false, colors: true }));
@@ -86,7 +90,12 @@ MyPlugin.prototype.apply = function (compiler) {
     bundleFunctions.push(function (callback) {
       var template = fs.readFileSync(path.join(__dirname, 'entry.ejs'), 'utf8');
       Modernizr.build({ 'feature-detects': testList }, function (result) {
-        var render = ejs.render(template, { modernizrBuild: result, properties: allProperties });
+        var render = ejs.render(template, {
+          modernizrBuild: result,
+          properties: allProperties,
+          publicPath: publicPath,
+          appendLocation: appendLocation
+        });
         var tempEntryPath = path.join(assetPath, 'temp-entry.js');
 
         fs.writeFileSync(tempEntryPath, render);
@@ -98,7 +107,7 @@ MyPlugin.prototype.apply = function (compiler) {
             filename: 'entry.js'
           },
           plugins: [
-            new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+            //new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
           ]
         }, function(err, stats) {
           console.log(stats.toString({ chunks: false, colors: true }));

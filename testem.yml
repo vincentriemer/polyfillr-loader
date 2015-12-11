@@ -1,0 +1,15 @@
+framework: mocha
+before_tests: webpack
+after_tests: rimraf test-assets
+src_files:
+  - test/test.js
+parallel: 5
+port: 7000
+test_page: tests.html.mustache
+serve_files:
+  - test-assets/entry.js
+launch_in_dev:
+  - PhantomJS
+  - Chrome
+  - Firefox
+  - Safari

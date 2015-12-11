@@ -15,8 +15,15 @@
     "core-js": "^1.2.6",
     "ejs": "^2.3.4",
     "js-combinatorics": "^0.5.0",
+    "mocha": "^2.3.4",
     "modernizr": "vincentriemer/Modernizr#polyfillr",
+    "phantomjs": "^1.9.19",
     "polyfillr-definitions": "vincentriemer/polyfillr-definitions",
     "webpack": "^1.12.9"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "rimraf": "^2.4.4",
+    "testem": "^0.9.11"
   }
 }

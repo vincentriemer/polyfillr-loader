@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Polyfillr Tests</title>
+    {{#css_files}}
+    <link rel="stylesheet" href="{{src}}" />
+    {{/css_files}}
+    <script src="/testem/mocha.js"></script>
+    <script src="/testem/chai.js"></script>
+    <script src="/testem.js"></script>
+    <script>mocha.setup('bdd')</script>
+</head>
+<body>
+<div id="mocha"></div>
+{{#serve_files}}
+<script src="{{src}}"></script>
+{{/serve_files}}
+</body>
+</html>

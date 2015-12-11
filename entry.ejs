@@ -13,6 +13,6 @@ if (!Modernizr.<%- property %>) {
 }
 <% }); %>
 var bundle = document.createElement('script');
-bundle.src = generateBundleName(failedProperties);
+bundle.src = '/<%- publicPath %>/' + generateBundleName(failedProperties);
 
-document.body.appendChild(bundle);
+document.<%- appendLocation %>.appendChild(bundle);

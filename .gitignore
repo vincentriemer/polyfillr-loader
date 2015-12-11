@@ -2,3 +2,4 @@ node_modules
 test/assets
 test/bundle
 .idea
+test-assets
