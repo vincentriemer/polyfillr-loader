@@ -9,6 +9,8 @@ var fs = require('fs');
 var Modernizr = require('modernizr');
 var ejs = require('ejs');
 
+var generateBundleName = require('./generateBundleName');
+
 // CREDIT: http://stackoverflow.com/a/1584377/3105183
 function arrayUnique(array) {
     var a = array.concat();
@@ -26,19 +28,13 @@ function MyPlugin(options) {
   this.tests = options.tests || [];
 }
 
-function generateBundleName(properties) {
-  var separator = '.';
-  if (properties.length === 0) { separator = ''; }
-  return 'bundle' + separator + properties.join('.') + '.js';
-}
-
 MyPlugin.prototype.apply = function (compiler) {
   var assetPath = this.path;
   var testList = this.tests;
   var sourcePath = path.join(compiler.options.output.path, compiler.options.output.filename);
 
   compiler.plugin('after-emit', function (compilation, finalCallback) {
-    var detectionString = compilation.assets[compiler.options.output.filename]._sourceResult;
+    var detectionString = fs.readFileSync(sourcePath, 'utf8');
     var detectedTests = polyDefs.test(acorn.parse(detectionString, { emcaVersion: 6 }));
 
     // always include es5 as a baseline
