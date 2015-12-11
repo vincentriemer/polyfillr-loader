@@ -1,5 +1,5 @@
 node_modules
-test/assets
-test/bundle
 .idea
 test-assets
+sauce.sh
+sc_client.pid

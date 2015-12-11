@@ -1,6 +1,8 @@
 framework: mocha
 before_tests: webpack
-after_tests: rimraf test-assets
+after_tests: rm -rf test-assets
+on_start: ./sauce-scripts/saucie-connect.js
+on_exit: ./sauce-scripts/saucie-disconnect.js
 src_files:
   - test/test.js
 parallel: 5
@@ -8,8 +10,161 @@ port: 7000
 test_page: tests.html.mustache
 serve_files:
   - test-assets/entry.js
+launchers:
+  SL_Chrome_Current:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=chrome
+      - --platformSL=Linux
+      - --versionSL=46.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Firefox_Current:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=firefox
+      - --platformSL=Linux
+      - --versionSL=42.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Safari_Current:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=safari
+      - --platformSL=OS X 10.11
+      - --versionSL=9.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Safari_Last:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=safari
+      - --platformSL=OS X 10.10
+      - --versionSL=8.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_MS_Edge:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=microsoftedge
+      - --platformSL=Windows 10
+      - --versionSL=20.10240
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_IE_11:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=internet explorer
+      - --platformSL=Windows 7
+      - --versionSL=11.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_iOS_Current:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=iphone
+      - --platformSL=OS X 10.10
+      - --versionSL=9.1
+      - --deviceNameSL=iPhone 6
+      - --deviceOrientationSL=portrait
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_iOS_Last:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=iphone
+      - --platformSL=OS X 10.10
+      - --versionSL=8.4
+      - --deviceNameSL=iPhone 6
+      - --deviceOrientationSL=portrait
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Android_5:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=android
+      - --platformSL=Linux
+      - --versionSL=5.1
+      - --deviceNameSL=Android Emulator
+      - --deviceOrientationSL=portrait
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Android_4:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=android
+      - --platformSL=Linux
+      - --versionSL=4.4
+      - --deviceNameSL=Android Emulator
+      - --deviceOrientationSL=portrait
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_Opera_Current:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=opera
+      - --platformSL=Linux
+      - --versionSL=12.15
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_IE_10:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=internet explorer
+      - --platformSL=Windows 7
+      - --versionSL=10.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
+  SL_IE_9:
+    exe: ./node_modules/.bin/saucie
+    args:
+      - --browserNameSL=internet explorer
+      - --platformSL=Windows 7
+      - --versionSL=9.0
+      - --no-ct
+      - --at
+      - -u
+    protocol: browser
 launch_in_dev:
   - PhantomJS
   - Chrome
   - Firefox
   - Safari
+launch_in_ci:
+  - SL_Chrome_Current
+  - SL_Firefox_Current
+  - SL_Safari_Current
+  - SL_Safari_Last
+  - SL_MS_Edge
+  - SL_IE_11
+  - SL_iOS_Current
+  - SL_iOS_Last
+  - SL_Android_5
+  - SL_Android_4
+  - SL_Opera_Current
+  - SL_IE_10
+  - SL_IE_9
