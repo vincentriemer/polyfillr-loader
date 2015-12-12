@@ -15,4 +15,4 @@ if (!Modernizr.<%- property %>) {
 var bundle = document.createElement('script');
 bundle.src = '/<%- publicPath %>/' + generateBundleName(failedProperties);
 
-document.<%- appendLocation %>.appendChild(bundle);
+document.body.appendChild(bundle);

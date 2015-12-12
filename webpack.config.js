@@ -11,7 +11,8 @@ module.exports = {
   plugins: [
     new Polyfillr({
       path: path.join(__dirname, 'test-assets'),
-      publicPath: 'test-assets'
+      publicPath: 'test-assets',
+      minify: false
     })
   ]
 };

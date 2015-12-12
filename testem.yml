@@ -5,6 +5,7 @@ on_start: ./sauce-scripts/saucie-connect.js
 on_exit: ./sauce-scripts/saucie-disconnect.js
 src_files:
   - test/test.js
+  - index.js
 parallel: 5
 port: 7000
 test_page: tests.html.mustache
@@ -151,9 +152,6 @@ launchers:
     protocol: browser
 launch_in_dev:
   - PhantomJS
-  - Chrome
-  - Firefox
-  - Safari
 launch_in_ci:
   - SL_Chrome_Current
   - SL_Firefox_Current
